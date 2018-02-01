@@ -112,17 +112,22 @@
     */
 //task 6
     function partialAny(fn) {
-        let args = [];
-        for (let i = 1; i < arguments.length; i++) {
-            args[i-1] = arguments[i];
-        }
+        let args = [].slice.call(arguments, 1); 
+
         return function () {
             let internalArgs = args.slice();
             let counter = 0;
-            for (let i = 1; i < internalArgs.length; i++) {
-                if (internalArgs[i] === undefined) {
-                    internalArgs[i] = arguments[counter];
+            
+            for (let key in internalArgs) {
+                if (internalArgs[key] === undefined) {
+                    internalArgs[key] = arguments[counter];
                     counter++;
+                }
+            }
+
+            if (counter < arguments.length) {
+                for (let i = counter; i < arguments.length; i++) {
+                    internalArgs.push(arguments[i]);
                 }
             }
 
@@ -133,11 +138,10 @@
 
 
 //tests for task 6
-    function test(a, b, c) { return 'a=' + a + ',b=' + b + ',c=' + c; }
+    /*function test(a, b, c) { return 'a=' + a + ',b=' + b + ',c=' + c; }
     var test1_3 = partialAny(test, 1, undefined, 3);
     console.log(test1_3(5)); // a=1,b=5,c=3
-
-
+    */
 //task 7
     
 
